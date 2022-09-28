@@ -1,0 +1,24 @@
+Bem vindo ao batalha naval.
+O jogo conssiste no combate entre dois jogadores.
+Ambos os jogadores possuem um tabuleiro 10x10, e 6 navios que devem ocupar esse tabuleiro.
+O objetivo de cada jogador é afundar os navios de seu adversário.
+
+A cada rodada você pode atacar uma posição do tabuleiro de seu adversário.
+Caso acerte, poderá atacar de novo.
+Uma vez que você acertou todas as posições ocupadas por seu adversário, a vitória é sua.
+Uma vez que seu adversário acertou todas as suas posições, você perde.
+
+Existem 6 tipos de navios, como esse jogo não é composto por uma interface gráfica, a fim de facilitar o jogo
+os navios seguirão um padrão simplificado e linear.
+Os navios ocupam, respectivamente, 1, 2, 3, 4, 5 e 6 posições.
+Eles podem ocupar espaços verticais ou horizontais no tabuleiro.
+
+O posicionamento dos navios é dado a partir de duas informações.
+A posições inicial e final no eixo x e y.
+Ou seja, se são dadas as posições (0, 0) e (0, 1) para o navio de duas posições, 
+ele está posicionado verticalmente e ocupando as casas (0, 0) e (0, 1)
+
+Ao final do posicionamento será perguntado se é desejado alterar a posição de seus navios
+Se não for, ou será a vez de seu oponente posicionar, caso você tenha posicionado antes,
+ou será o momento de iniciar o embate, que se dará a partir da indicação de posições nos eixos(x, y)
+Onde é esperado que os navios de seu oponente estejam localizados.
