@@ -21,10 +21,12 @@ class Board:
             print(line)
 
     def can_position(self, start_point:Point, end_point:Point):
-        if start_point.x < 0 or start_point.x > 9 or start_point.y < 0 or start_point.y > 9:
+        FIRST_INDEX = 0
+        LAST_INDEX = 9
+        if start_point.x < FIRST_INDEX or start_point.x > LAST_INDEX or start_point.y < FIRST_INDEX or start_point.y > LAST_INDEX:
             return False
-        elif end_point.y > start_point.y:
-            if (end_point.y + 1) - start_point.y not in self.ships_to_position:
+        elif end_point.y != start_point.y:
+            if abs((end_point.y) - start_point.y) + 1 not in self.ships_to_position:
                 return False
             if start_point.x != end_point.x:
                 return False

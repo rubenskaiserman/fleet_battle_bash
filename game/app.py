@@ -1,4 +1,3 @@
-from tabnanny import check
 from board import Board
 from point import Point
 from os import system
@@ -63,12 +62,11 @@ def play_game(player1:Board, player2:Board):
             return player2.name
         print_boards(player1_name=player1.name, player2_name=player2.name, board_p1=player1_blank_board, board_p2=player2_blank_board)
 
-
 def main():
     show_introduction()
     input('Press Enter to Start...')
-
     system('clear')
+   
     player1 = Board(input('Insira o nome do jogador 1: '))
     print("Agora insira a posição de seus navios")
     player1.position_fleet()
