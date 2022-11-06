@@ -21,33 +21,62 @@ class Board:
             print(line)
 
     def can_position(self, start_point:Point, end_point:Point):
-        if start_point.x < 0 or start_point.x > 9 or start_point.y < 0 or start_point.y > 9:
+        FIRST_INDEX = 0
+        LAST_INDEX = 9
+        if start_point.x < FIRST_INDEX or start_point.x > LAST_INDEX or start_point.y < FIRST_INDEX or start_point.y > LAST_INDEX:
+            print("Os vetores inseridos não correspondem a posições possíveis")
             return False
-        elif end_point.y > start_point.y:
-            if (end_point.y + 1) - start_point.y not in self.ships_to_position:
+        if end_point.y != start_point.y:
+            if abs((end_point.y) - start_point.y) + 1 not in self.ships_to_position:
+                print("O tamanho do navio indicado não está disponível")
                 return False
             if start_point.x != end_point.x:
+                print("O navio selecionado não pode ser posicionado pois não é uma reta")
                 return False
-            for point_y in range(start_point.y, end_point.y + 1):
-                if self.board[start_point.x][point_y] == 'O':
-                    return False
+            if start_point.y < end_point.y:
+                for point_y in range(start_point.y, end_point.y + 1):
+                    if self.board[point_y][start_point.x] == 'O':
+                        print("A posição selecionada está indisponível")
+                        return False
+            else:
+                for point_y in range(end_point.y, start_point.y + 1):
+                    if self.board[point_y][start_point.x] == 'O':
+                        print("A posição selecionada está indisponível")
+                        return False
         else:
             if (end_point.x + 1) - start_point.x not in self.ships_to_position:
+                print("O tamanho do navio indicado não está disponível")
                 return False
-            if start_point.y != end_point.y:
-                return False
-            for point_x in range(start_point.x, end_point.x + 1):
-                if self.board[point_x][start_point.y] == 'O':
-                    return False
+            if start_point.x < end_point.x:
+                for point_x in range(start_point.x, end_point.x + 1):
+                    if self.board[start_point.y][point_x] == 'O':
+                        print("A posição selecionada está indisponível")
+                        return False
+            else:
+                for point_x in range(end_point.x, start_point.x + 1):
+                    if self.board[start_point.y][point_x] == 'O':
+                        print("A posição selecionada está indisponível")
+                        return False
         return True
 
     def position_ship(self, start_point:Point, end_point:Point):
-        if end_point.y > start_point.y:
-            for point_y in range(start_point.y, end_point.y + 1):
-                self.board[start_point.x][point_y] = 'O'
+        if abs(end_point.y - start_point.y) > 0:
+            length = abs(end_point.y - start_point.y) + 1
+            if start_point.y < end_point.y:
+                for point_y in range(start_point.y, end_point.y + 1):
+                    self.board[point_y][start_point.x] = 'O'
+            else:
+                for point_y in range(end_point.y, start_point.y + 1):
+                    self.board[point_y][start_point.x] = 'O'
         else:
-            for point_x in range(start_point.x, end_point.x + 1):
-                self.board[point_x][start_point.y] = 'O'
+            length = abs(end_point.x - start_point.x) + 1
+            if start_point.x < end_point.x:
+                for point_x in range(start_point.x, end_point.x + 1):
+                    self.board[start_point.y][point_x] = 'O'
+            else:
+                for point_x in range(end_point.x, start_point.x + 1):
+                    self.board[start_point.y][point_x] = 'O'
+        self.ships_to_position.remove(length)
 
     def position_fleet(self):
         for i in range(6):
@@ -60,7 +89,5 @@ class Board:
                     if self.can_position(start_ship, end_ship):
                         self.position_ship(start_ship, end_ship)
                         break
-                    else:
-                        print("A posição desejada não pode ser utilizada. Por favor tente novamente", end="\n\n")
                 except:
                     print("Ocorreu um erro, tente novamente", end="\n\n")

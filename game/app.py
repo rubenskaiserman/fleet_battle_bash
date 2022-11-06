@@ -1,4 +1,3 @@
-from tabnanny import check
 from board import Board
 from point import Point
 from os import system
@@ -16,7 +15,7 @@ def check_victory(defending_player:Board):
     return True
 
 def attack_possible(position:Point, board:Board):
-    if 0 <= position.x < 10 and 0 <= position.y < 10 and board.board[position.x][position.y] == '_':
+    if 0 <= position.x < 10 and 0 <= position.y < 10 and board.board[position.y][position.x] == '_':
         return True
     return False
 
@@ -25,7 +24,7 @@ def print_boards(player1_name, board_p1, player2_name, board_p2):
     for i in range(10):
         print(board_p1.board[i], "  ", board_p2.board[i])
 
-def attack(attacking_player:Board, defending_player:Board, blank_board: Board):
+def attack(attacking_player:Board, defending_player:Board, blank_board:Board, player_1:Board, player_2:Board):
     while True:
         while True:
             attack_position = input(f"É a vez do {attacking_player.name}. Insira a posição que deseja atacar: ").split()
@@ -35,17 +34,18 @@ def attack(attacking_player:Board, defending_player:Board, blank_board: Board):
                 print("Valor inválido, tente novamente\n\n")
         attack_point = Point(int(attack_position[0]), int(attack_position[1]))
         if attack_possible(attack_point, blank_board):
-            if defending_player.board[int(attack_position[0])][int(attack_position[1])] == 'O':
-                defending_player.board[int(attack_position[0])][int(attack_position[1])] = 'X'
-                blank_board.board[int(attack_position[0])][int(attack_position[1])] = "X"
+            if defending_player.board[attack_point.y][attack_point.x] == 'O':
+                defending_player.board[attack_point.y][attack_point.x] = 'X'
+                blank_board.board[attack_point.y][attack_point.x] = "X"
                 print("CABUM, ACERTOU")
                 if check_victory(defending_player):
                     return True
             else:
-                defending_player.board[int(attack_position[0])][int(attack_position[1])] = 'E'
-                blank_board.board[int(attack_position[0])][int(attack_position[1])] = "E"
+                defending_player.board[attack_point.y][attack_point.x] = 'E'
+                blank_board.board[attack_point.y][attack_point.x] = "E"
                 print("SPLASH. ERROU")
                 return blank_board
+            print_boards(player1_name=player_1.name, player2_name=player_2.name, board_p1=player_1, board_p2=player_2)
         else:
             print("Não foi possível atacar a posição selecionada, tente novamente")
 
@@ -54,21 +54,20 @@ def play_game(player1:Board, player2:Board):
     player2_blank_board = Board('Player2_blank_board')
     print_boards(player1_name=player1.name, player2_name=player2.name, board_p1=player1_blank_board, board_p2=player2_blank_board)
     while True:
-        player2_blank_board = attack(player1, player2, player2_blank_board)
+        player2_blank_board = attack(player1, player2, player2_blank_board, player_1=player1_blank_board, player_2=player2_blank_board)
         if player2_blank_board == True:
             return player1.name
         print_boards(player1_name=player1.name, player2_name=player2.name, board_p1=player1_blank_board, board_p2=player2_blank_board)
-        player1_blank_board = attack(player2, player1, player1_blank_board)
+        player1_blank_board = attack(player2, player1, player1_blank_board, player_1=player1_blank_board, player_2=player2_blank_board)
         if player1_blank_board == True:
             return player2.name
         print_boards(player1_name=player1.name, player2_name=player2.name, board_p1=player1_blank_board, board_p2=player2_blank_board)
 
-
 def main():
     show_introduction()
     input('Press Enter to Start...')
-
     system('clear')
+   
     player1 = Board(input('Insira o nome do jogador 1: '))
     print("Agora insira a posição de seus navios")
     player1.position_fleet()
